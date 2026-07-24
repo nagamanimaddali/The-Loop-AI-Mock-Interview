@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Loop — configure interview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #11141A;
+    --panel: #191D25;
+    --panel-line: #262B35;
+    --text: #E7E9EE;
+    --muted: #8B92A3;
+    --accent: #5EEAD4;
+    --accent-dim: #2C6E66;
+    --warn: #F0A857;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  body{
+    background: var(--bg); color: var(--text); font-family:'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 32px; border-bottom: 1px solid var(--panel-line);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:10px; height:10px; border-radius:50%; background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(94,234,212,0.15); animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{ 0%,100%{ box-shadow: 0 0 0 3px rgba(94,234,212,0.15); } 50%{ box-shadow: 0 0 0 6px rgba(94,234,212,0.08); } }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 18px; letter-spacing: -0.02em; }
+  .back-btn{
+    background:transparent; color: var(--muted); font-weight:500; font-size:13px;
+    padding: 9px 16px; border-radius: 7px; border:1px solid var(--panel-line); text-decoration:none; cursor:pointer;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  main{ max-width: 1080px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.06em; margin-bottom: 14px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content: ">"; color: var(--accent-dim); }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 34px;
+    letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .page-sub{ color: var(--muted); font-size: 14.5px; margin-bottom: 36px; max-width:520px; }
+
+  .config-grid{ display:grid; grid-template-columns: 1.5fr 1fr; gap: 24px; align-items:start; }
+  @media (max-width: 860px){ .config-grid{ grid-template-columns: 1fr; } }
+
+  .form-stack{ display:flex; flex-direction:column; gap: 26px; }
+  .field-block{ }
+  .field-label{
+    font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em;
+    margin-bottom:12px; font-family:'JetBrains Mono', monospace; display:block;
+  }
+  .option-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .opt{
+    font-size:13.5px; padding:10px 16px; border-radius:8px; border:1px solid var(--panel-line);
+    color: var(--muted); cursor:pointer; background:var(--panel); transition: border-color .15s, color .15s;
+    user-select:none;
+  }
+  .opt:hover{ border-color:#3A4150; }
+  .opt.active{ border-color: var(--accent); color: var(--accent); background: rgba(94,234,212,0.06); }
+
+  .style-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; }
+  @media (max-width: 480px){ .style-grid{ grid-template-columns: 1fr; } }
+  .style-card{
+    border:1px solid var(--panel-line); border-radius:10px; padding: 14px 16px;
+    cursor:pointer; background: var(--panel); transition: border-color .15s;
+  }
+  .style-card:hover{ border-color:#3A4150; }
+  .style-card.active{ border-color: var(--accent); background: rgba(94,234,212,0.06); }
+  .style-card .name{ font-size:14px; font-weight:600; margin-bottom:4px; }
+  .style-card .desc{ font-size:12px; color: var(--muted); line-height:1.4; }
+  .style-card.active .name{ color: var(--accent); }
+
+  /* summary card */
+  .summary-card{
+    background: var(--panel); border:1px solid var(--panel-line); border-radius: 12px;
+    overflow:hidden; position:sticky; top:24px;
+  }
+  .summary-head{
+    padding: 14px 18px; border-bottom:1px solid var(--panel-line);
+    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .dot-row{ display:flex; gap:6px; }
+  .dot-row span{ width:8px; height:8px; border-radius:50%; background:#3A404C; display:block; }
+  .summary-body{ padding: 20px; display:flex; flex-direction:column; gap:16px; }
+  .summary-row{ display:flex; justify-content:space-between; align-items:center; padding: 9px 0; border-bottom:1px solid var(--panel-line); }
+  .summary-row:last-of-type{ border-bottom:none; }
+  .summary-row .k{ font-size:13px; color: var(--muted); }
+  .summary-row .v{ font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--text); }
+  .duration-box{
+    background:#20252F; border:1px solid var(--panel-line); border-radius:8px; padding: 14px 16px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .duration-box .label{ font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .duration-box .big{ font-family:'JetBrains Mono', monospace; font-size:20px; color: var(--accent); }
+  .start-btn{
+    background: var(--accent); color:#0B1512; font-weight:600; font-size:14px;
+    padding: 13px; border-radius: 8px; border:none; width:100%; cursor:pointer; text-decoration:none;
+    text-align:center; display:block;
+  }
+  .hint{ font-size:12px; color:var(--muted); line-height:1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div class="brand-name">the loop</div>
+  </div>
+  <a class="back-btn" href="loop-frontpage-mockup.html">&larr; Back</a>
+</header>
+
+<main>
+  <div class="eyebrow">step 1 of 2 — set up your session</div>
+  <h1>Configure your interview</h1>
+  <p class="page-sub">Pick a topic, difficulty, and interviewer style. The session summary updates as you go.</p>
+
+  <div class="config-grid">
+    <div class="form-stack">
+      <div class="field-block">
+        <span class="field-label">Topic</span>
+        <div class="option-grid" id="topicGroup">
+          <div class="opt active" data-value="DSA">DSA</div>
+          <div class="opt" data-value="DBMS">DBMS</div>
+          <div class="opt" data-value="OS">OS</div>
+          <div class="opt" data-value="CN">CN</div>
+          <div class="opt" data-value="OOP">OOP</div>
+          <div class="opt" data-value="Java">Java</div>
+          <div class="opt" data-value="Python">Python</div>
+          <div class="opt" data-value="SQL">SQL</div>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <span class="field-label">Difficulty</span>
+        <div class="option-grid" id="difficultyGroup">
+          <div class="opt" data-value="Easy">Easy</div>
+          <div class="opt active" data-value="Medium">Medium</div>
+          <div class="opt" data-value="Hard">Hard</div>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <span class="field-label">Interview style</span>
+        <div class="style-grid" id="styleGroup">
+          <div class="style-card active" data-value="Friendly">
+            <div class="name">Friendly</div>
+            <div class="desc">Supportive tone, hints offered when you're stuck.</div>
+          </div>
+          <div class="style-card" data-value="Amazon">
+            <div class="name">Amazon</div>
+            <div class="desc">Leadership-principle framing, pushes on trade-offs.</div>
+          </div>
+          <div class="style-card" data-value="Google">
+            <div class="name">Google</div>
+            <div class="desc">Deep follow-ups on complexity and edge cases.</div>
+          </div>
+          <div class="style-card" data-value="Microsoft">
+            <div class="name">Microsoft</div>
+            <div class="desc">Balanced pace, focus on clear communication.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-block">
+        <span class="field-label">Number of questions</span>
+        <div class="option-grid" id="countGroup">
+          <div class="opt" data-value="5">5</div>
+          <div class="opt active" data-value="10">10</div>
+          <div class="opt" data-value="15">15</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-head">
+        <span>session summary</span>
+        <div class="dot-row"><span></span><span></span><span></span></div>
+      </div>
+      <div class="summary-body">
+        <div class="summary-row"><div class="k">Topic</div><div class="v" id="sumTopic">DSA</div></div>
+        <div class="summary-row"><div class="k">Difficulty</div><div class="v" id="sumDifficulty">Medium</div></div>
+        <div class="summary-row"><div class="k">Style</div><div class="v" id="sumStyle">Friendly</div></div>
+        <div class="summary-row"><div class="k">Questions</div><div class="v" id="sumCount">10</div></div>
+
+        <div class="duration-box">
+          <div>
+            <div class="label">Est. duration</div>
+            <div class="big" id="sumDuration">~25 min</div>
+          </div>
+        </div>
+
+        <button class="start-btn" id="startBtn">
+            Start interview
+        </button>
+        <div class="hint">You can end the session early at any time from the interview screen.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  function wireGroup(groupId, summaryId){
+    const group = document.getElementById(groupId);
+    group.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-value]');
+      if(!opt) return;
+      group.querySelectorAll('[data-value]').forEach(el => el.classList.remove('active'));
+      opt.classList.add('active');
+      document.getElementById(summaryId).textContent = opt.dataset.value;
+      updateDuration();
+    });
+  }
+
+  function updateDuration(){
+    const count = parseInt(document.querySelector('#countGroup .active').dataset.value, 10);
+    const style = document.querySelector('#styleGroup .active').dataset.value;
+    const perQuestion = { Friendly: 2.5, Amazon: 3.5, Google: 4, Microsoft: 3 };
+    const mins = Math.round(count * perQuestion[style]);
+    document.getElementById('sumDuration').textContent = `~${mins} min`;
+  }
+
+  wireGroup('topicGroup', 'sumTopic');
+  wireGroup('difficultyGroup', 'sumDifficulty');
+  wireGroup('countGroup', 'sumCount');
+
+  document.getElementById('styleGroup').addEventListener('click', (e) => {
+    const card = e.target.closest('.style-card');
+    if(!card) return;
+    document.querySelectorAll('#styleGroup .style-card').forEach(el => el.classList.remove('active'));
+    card.classList.add('active');
+    document.getElementById('sumStyle').textContent = card.dataset.value;
+    updateDuration();
+  });
+
+  updateDuration();
+  document.getElementById("startBtn").addEventListener("click", async function () {
+
+    const topic = document.querySelector("#topicGroup .active").dataset.value;
+    const difficulty = document.querySelector("#difficultyGroup .active").dataset.value;
+    const style = document.querySelector("#styleGroup .active").dataset.value;
+    const questions = document.querySelector("#countGroup .active").dataset.value;
+
+    try {
+
+        const response = await fetch("http://127.0.0.1:5000/startInterview", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                topic,
+                difficulty,
+                style,
+                questions
+            })
+
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        localStorage.setItem("interviewData", JSON.stringify(data));
+
+        window.location.href = "interview.html";
+
+    } catch (error) {
+        console.error("Full error:", error);
+        alert(error.message);
+    }
+
+});
+</script>
+
+</body>
+</html>

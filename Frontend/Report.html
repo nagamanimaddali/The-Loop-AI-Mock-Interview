@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Loop — interview report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #11141A;
+    --panel: #191D25;
+    --panel-line: #262B35;
+    --text: #E7E9EE;
+    --muted: #8B92A3;
+    --accent: #5EEAD4;
+    --accent-dim: #2C6E66;
+    --warn: #F0A857;
+    --danger: #E4685D;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:9px; height:9px; border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(94,234,212,0.15);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ box-shadow: 0 0 0 3px rgba(94,234,212,0.15); }
+    50%{ box-shadow: 0 0 0 6px rgba(94,234,212,0.08); }
+  }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 16px; letter-spacing: -0.02em; }
+  .header-actions{ display:flex; gap:10px; }
+  .btn-ghost{
+    background:transparent; color: var(--text); font-weight:500; font-size:13px;
+    padding: 9px 16px; border-radius: 7px; border:1px solid var(--panel-line); text-decoration:none; cursor:pointer;
+  }
+  .btn-primary{
+    background: var(--accent); color:#0B1512; font-weight:600; font-size:13px;
+    padding: 9px 16px; border-radius: 7px; text-decoration:none; border:none; cursor:pointer;
+  }
+
+  main{ max-width: 1080px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  .report-head{ margin-bottom: 32px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.06em; margin-bottom: 12px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content: ">"; color: var(--accent-dim); }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: 32px; letter-spacing: -0.02em; margin-bottom:8px;
+  }
+  .report-sub{ color: var(--muted); font-size: 14px; }
+
+  /* score hero */
+  .score-hero{
+    display:grid; grid-template-columns: 200px 1fr; gap: 28px;
+    background: var(--panel); border:1px solid var(--panel-line); border-radius: 14px;
+    padding: 28px; margin-bottom: 24px;
+  }
+  @media (max-width: 720px){ .score-hero{ grid-template-columns: 1fr; } }
+
+  .score-ring-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+  .score-ring{ position:relative; width:150px; height:150px; }
+  .score-ring svg{ transform: rotate(-90deg); width:150px; height:150px; }
+  .score-ring circle{ fill:none; stroke-width:10; }
+  .score-ring .track{ stroke: var(--panel-line); }
+  .score-ring .fill{ stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 408; stroke-dashoffset: 90; }
+  .score-num{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .score-num .big{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:34px; }
+  .score-num .small{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+  .recommendation{
+    font-size:12px; padding: 6px 12px; border-radius: 20px; border:1px solid var(--accent-dim);
+    color: var(--accent); background: rgba(94,234,212,0.06);
+  }
+
+  .metric-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 480px){ .metric-grid{ grid-template-columns: 1fr; } }
+  .metric{ display:flex; flex-direction:column; gap:8px; }
+  .metric .top{ display:flex; justify-content:space-between; font-size:13px; }
+  .metric .top .k{ color: var(--muted); }
+  .metric .top .v{ font-family:'JetBrains Mono', monospace; }
+  .bar{ height:6px; border-radius:4px; background: var(--panel-line); overflow:hidden; }
+  .bar .fill{ height:100%; background: var(--accent); border-radius:4px; }
+  .bar .fill.warn{ background: var(--warn); }
+
+  /* two column: strengths/weaknesses */
+  .split-two{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 720px){ .split-two{ grid-template-columns: 1fr; } }
+  .panel{ background: var(--panel); border:1px solid var(--panel-line); border-radius: 12px; padding: 20px; }
+  .panel-title{ font-family:'Space Grotesk', sans-serif; font-size:15px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .panel-title .dot{ width:7px; height:7px; border-radius:50%; }
+  .panel-title .dot.good{ background: var(--accent); }
+  .panel-title .dot.bad{ background: var(--danger); }
+  .point-list{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .point-list li{ font-size:13.5px; color: var(--muted); line-height:1.55; padding-left:16px; position:relative; }
+  .point-list li::before{ content:"—"; position:absolute; left:0; color: var(--panel-line); }
+
+  /* question review */
+  .section-label{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.06em; margin: 32px 0 14px;
+  }
+  .qa-card{
+    background: var(--panel); border:1px solid var(--panel-line); border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 12px;
+  }
+  .qa-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:10px; }
+  .qa-q{ font-size:14px; font-weight:500; line-height:1.5; }
+  .qa-score{
+    font-family:'JetBrains Mono', monospace; font-size:12px; flex-shrink:0;
+    padding: 4px 10px; border-radius: 20px; border:1px solid var(--accent-dim); color: var(--accent);
+  }
+  .qa-score.mid{ border-color:#5A5230; color: var(--warn); }
+  .qa-answer{ font-size:13px; color: var(--muted); line-height:1.6; padding-left:14px; border-left:2px solid var(--panel-line); }
+  .qa-note{ font-size:12.5px; color: var(--muted); margin-top:10px; padding-left:14px; border-left:2px solid var(--warn); }
+
+  .report-actions{ display:flex; gap:12px; margin-top: 36px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div class="brand-name">the loop</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-ghost">Share report</button>
+    <button class="btn-primary">Download PDF</button>
+  </div>
+</header>
+
+<main>
+  <div class="report-head">
+    <div class="eyebrow" id="sessionTitle"></div>    <h1>Interview report</h1>
+    <p class="report-sub" id="reportSub"></p>  </div>
+
+  <div class="score-hero">
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg viewBox="0 0 150 150">
+          <circle class="track" cx="75" cy="75" r="65"></circle>
+          <circle class="fill" id="scoreRing" cx="75" cy="75" r="65"></circle>
+        </svg>
+        <div class="score-num">
+          <div class="big" id="overallScore">78</div>
+          <div class="small">overall</div>
+        </div>
+      </div>
+      <div class="recommendation" id="recommendation">Lean hire</div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="top"><span class="k">Technical</span><span class="v" id="technicalScore">82 / 100</span></div>
+        <div class="bar">
+            <div class="fill" id="technicalBar"></div>
+        </div>     
+      </div>
+      <div class="metric">
+        <div class="top"><span class="k">Communication</span><span class="v" id="communicationScore">74 / 100</span></div>
+        <div class="bar">
+            <div class="fill" id="communicationBar"></div>
+        </div>      
+      </div>
+      <div class="metric">
+        <div class="top"><span class="k">Problem solving</span><span class="v" id="problemSolvingScore">80 / 100</span></div>
+        <div class="bar">
+            <div class="fill" id="problemBar"></div>
+        </div>      
+      </div>
+      <div class="metric">
+        <div class="top"><span class="k">Confidence</span><span class="v" id="confidenceScore">65 / 100</span></div>
+        <div class="bar">
+            <div class="fill" id="confidenceBar"></div>
+        </div>      
+      </div>
+    </div>
+  </div>
+
+  <div class="split-two">
+    <div class="panel">
+      <div class="panel-title"><span class="dot good"></span>Strengths</div>
+      <ul class="point-list" id="strengthList"></ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot bad"></span>Weaknesses</div>
+      <ul class="point-list" id="weaknessList"></ul>
+    </div>
+  </div>
+
+  <div class="section-label">Question-by-question review</div>
+  <div id="questionReview"></div>
+
+<div class="report-actions">
+    <button class="btn-primary">
+        Start another interview
+    </button>
+
+    <button class="btn-ghost" id="retryBtn">
+        Retry this topic
+    </button>
+</div>
+  
+</main>
+<script>
+const report = JSON.parse(localStorage.getItem("report"));
+
+const history =
+    JSON.parse(localStorage.getItem("interviewHistory"));
+
+const interview =
+    JSON.parse(localStorage.getItem("interviewData"));
+
+if(report){
+
+    overallScore.innerText = report.overall;
+
+    const circumference = 408;
+
+    const offset =
+        circumference -
+        (report.overall / 100) * circumference;
+
+    document.getElementById("scoreRing")
+    .style.strokeDashoffset = offset;
+
+    recommendation.innerText = report.recommendation;
+
+    technicalScore.innerText =
+        report.technical + " / 100";
+
+    communicationScore.innerText =
+        report.communication + " / 100";
+
+    problemSolvingScore.innerText =
+        report.problem_solving + " / 100";
+
+    confidenceScore.innerText =
+        report.confidence + " / 100";
+
+    
+
+    // Progress bars
+    document.getElementById("technicalBar").style.width =
+        report.technical + "%";
+
+    document.getElementById("communicationBar").style.width =
+        report.communication + "%";
+
+    document.getElementById("problemBar").style.width =
+        report.problem_solving + "%";
+
+    document.getElementById("confidenceBar").style.width =
+        report.confidence + "%";
+
+    // Session
+
+    document.getElementById("sessionTitle").innerText =
+        `session_01 complete · ${interview.topic}`;
+
+    document.getElementById("reportSub").innerText =
+        `Reviewed ${history.length} questions · ${interview.difficulty} difficulty`;
+
+    // Strengths
+
+    const strengthList =
+        document.getElementById("strengthList");
+
+    report.strengths.forEach(s => {
+
+        const li =
+            document.createElement("li");
+
+        li.innerText = s;
+
+        strengthList.appendChild(li);
+
+    });
+
+    // Weaknesses
+
+    const weaknessList =
+        document.getElementById("weaknessList");
+
+    report.weaknesses.forEach(w => {
+
+        const li =
+            document.createElement("li");
+
+        li.innerText = w;
+
+        weaknessList.appendChild(li);
+
+    });
+
+    // Question review
+
+    const review =
+        document.getElementById("questionReview");
+
+    history.forEach((item,index)=>{
+
+        review.innerHTML += `
+        <div class="qa-card">
+
+            <div class="qa-top">
+
+                <div class="qa-q">
+
+                    Q${index+1} · ${item.question}
+
+                </div>
+
+            </div>
+
+            <div class="qa-answer">
+
+                ${item.answer}
+
+            </div>
+
+        </div>
+        `;
+
+    });
+
+}
+document
+.getElementById("retryBtn")
+.onclick = () => {
+
+    window.location.href =
+        "setup.html";
+
+};
+</script>
+</body>
+</html>

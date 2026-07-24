@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Loop — interview session</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #11141A;
+    --panel: #191D25;
+    --panel-line: #262B35;
+    --text: #E7E9EE;
+    --muted: #8B92A3;
+    --accent: #5EEAD4;
+    --accent-dim: #2C6E66;
+    --warn: #F0A857;
+    --danger: #E4685D;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display:flex; flex-direction:column;
+  }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  /* top bar */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--panel-line);
+    flex-shrink:0;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:9px; height:9px; border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(94,234,212,0.15);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ box-shadow: 0 0 0 3px rgba(94,234,212,0.15); }
+    50%{ box-shadow: 0 0 0 6px rgba(94,234,212,0.08); }
+  }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 16px; letter-spacing: -0.02em; }
+  .session-tag{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted); }
+  .end-btn{
+    background:transparent; border:1px solid var(--panel-line); color: var(--danger);
+    font-size:13px; font-weight:500; padding: 8px 14px; border-radius:7px; cursor:pointer;
+  }
+
+  /* body layout */
+  .layout{
+    flex:1; display:grid; grid-template-columns: 1fr 300px;
+    max-width: 1180px; width:100%; margin: 0 auto; overflow:hidden;
+  }
+  @media (max-width: 860px){ .layout{ grid-template-columns: 1fr; } .rail{ display:none; } }
+
+  /* chat column */
+  .chat-col{ display:flex; flex-direction:column; min-height:0; border-right:1px solid var(--panel-line); }
+  .progress-strip{
+    display:flex; gap:4px; padding: 14px 24px 0;
+  }
+  .progress-strip .seg{ flex:1; height:3px; background: var(--panel-line); border-radius:2px; }
+  .progress-strip .seg.done{ background: var(--accent); }
+  .progress-strip .seg.current{ background: var(--accent-dim); }
+
+  .transcript{ flex:1; overflow-y:auto; padding: 20px 24px; display:flex; flex-direction:column; gap:18px; }
+  .msg{ max-width: 78%; font-size: 14.5px; line-height:1.6; }
+  .msg .role{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--muted);
+    margin-bottom:6px; text-transform: uppercase; letter-spacing:0.05em;
+  }
+  .msg.interviewer{ align-self:flex-start; }
+  .msg.interviewer .bubble{ background:#20252F; border:1px solid var(--panel-line); border-radius: 4px 12px 12px 12px; padding:13px 16px; }
+  .msg.you{ align-self:flex-end; }
+  .msg.you .bubble{ background: rgba(94,234,212,0.08); border:1px solid var(--accent-dim); border-radius: 12px 4px 12px 12px; padding:13px 16px; }
+  .msg.feedback{ align-self:flex-start; max-width:78%; }
+  .msg.feedback .bubble{ border-left: 2px solid var(--warn); background:transparent; padding:6px 0 6px 12px; color: var(--muted); font-size:13px; }
+
+  .cursor-msg .bubble{ background:#20252F; border:1px solid var(--panel-line); border-radius: 4px 12px 12px 12px; padding:13px 16px; }
+  .cursor{ display:inline-block; width:2px; height:14px; background:var(--accent); margin-left:2px; vertical-align:middle; animation: blinkcursor 1s step-end infinite; }
+  @keyframes blinkcursor{ 50%{ opacity:0; } }
+
+  /* input dock */
+  .input-dock{ border-top:1px solid var(--panel-line); padding: 16px 24px; flex-shrink:0; }
+  .input-row{
+    display:flex; gap:10px; align-items:flex-end;
+    background:#181C24; border:1px solid var(--panel-line); border-radius:10px; padding:10px 12px;
+  }
+  .input-row textarea{
+    flex:1; background:transparent; border:none; outline:none; resize:none;
+    color: var(--text); font-family:'Inter', sans-serif; font-size:14px; line-height:1.5;
+    max-height:120px;
+  }
+  .input-row textarea::placeholder{ color: #565D6B; }
+  .send-btn{
+    background: var(--accent); color:#0B1512; border:none; border-radius:7px;
+    font-weight:600; font-size:13px; padding: 9px 16px; cursor:pointer; flex-shrink:0;
+  }
+  .input-hint{ font-size:11px; color:#565D6B; margin-top:8px; font-family:'JetBrains Mono', monospace; }
+
+  /* right rail */
+  .rail{ padding: 22px 20px; display:flex; flex-direction:column; gap:20px; }
+  .rail-block{
+    background: var(--panel); border:1px solid var(--panel-line); border-radius: 10px; padding: 16px;
+  }
+  .rail-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; font-family:'JetBrains Mono', monospace; }
+  .stat-row{ display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--panel-line); }
+  .stat-row:last-child{ border-bottom:none; }
+  .stat-row .k{ font-size:13px; color:var(--muted); }
+  .stat-row .v{ font-family:'JetBrains Mono', monospace; font-size:13px; }
+  .tag-list{ display:flex; flex-wrap:wrap; gap:6px; }
+  .tag{
+    font-size:12px; padding:5px 10px; border-radius:20px; border:1px solid var(--panel-line); color: var(--muted);
+  }
+  .tag.current{ border-color: var(--accent); color: var(--accent); background: rgba(94,234,212,0.06); }
+  .tip{ font-size:12.5px; color:var(--muted); line-height:1.6; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div class="brand-name">the loop</div>
+  </div>
+  <div class="session-tag" id="sessionTag"></div>
+  <button class="end-btn" id="endBtn">
+    End interview
+</button>
+</header>
+
+<div class="layout">
+  <div class="chat-col">
+    <div class="progress-strip" id="progressStrip"></div>
+
+    <div class="transcript" id="transcript">
+      <div class="msg interviewer">
+        <div class="role">Interviewer</div>
+        <div class="bubble" id="question">
+          Loading question...
+        </div>      
+      </div>
+    </div>
+
+    <div class="input-dock">
+      <div class="input-row">
+        <textarea
+            id="answerBox"
+            rows="1"
+            placeholder="Type your answer…">
+        </textarea>        
+        <button class="send-btn" id="sendBtn">Send</button>
+      </div>
+      <div class="input-hint">enter to send · shift+enter for a new line</div>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="rail-block">
+      <div class="rail-label">Progress</div>
+      <div class="stat-row"><div class="k">Elapsed</div><div class="v" id="timer">00:00</div></div>
+      <div class="stat-row"><div class="k">Question</div><div class="v" id="questionProgress">1 / 5</div></div>
+      <div class="stat-row"><div class="k">Difficulty</div><div class="v" id="difficulty"></div></div>
+    </div>
+
+    <div class="rail-block">
+      <div class="rail-label">Topics covered</div>
+      <div class="tag-list" id="topicList"></div>
+    </div>
+
+    <div class="rail-block">
+      <div class="rail-label">In this session</div>
+      <div class="tip" id="sessionInfo"></div>    </div>
+  </div>
+</div>
+<script>
+const data = JSON.parse(localStorage.getItem("interviewData"));
+
+if (!data) {
+    alert("No interview data found!");
+    window.location.href = "setup.html";
+}
+
+let currentQuestion = data.question;
+let interviewHistory = [];
+let questionCount = 1;
+const totalQuestions = data.questions;
+
+function updateProgressStrip() {
+
+    const strip = document.getElementById("progressStrip");
+
+    strip.innerHTML = "";
+
+    for (let i = 1; i <= totalQuestions; i++) {
+
+        const seg = document.createElement("div");
+
+        seg.classList.add("seg");
+
+        if (i < questionCount) {
+            seg.classList.add("done");
+        } else if (i === questionCount) {
+            seg.classList.add("current");
+        }
+
+        strip.appendChild(seg);
+    }
+}
+
+const transcript = document.getElementById("transcript");
+const question = document.getElementById("question");
+const answerBox = document.getElementById("answerBox");
+const sendBtn = document.getElementById("sendBtn");
+
+// Timer
+let seconds = 0;
+
+setInterval(() => {
+
+    seconds++;
+
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+
+    document.getElementById("timer").innerText =
+        String(mins).padStart(2, "0") + ":" +
+        String(secs).padStart(2, "0");
+
+}, 1000);
+
+// Show first question
+question.innerText = currentQuestion;
+
+document.getElementById("difficulty").innerText =
+    data.difficulty;
+
+const topicList = document.getElementById("topicList");
+
+topicList.innerHTML = `
+    <div class="tag current">${data.topic}</div>
+`;
+
+document.getElementById("sessionInfo").innerText =
+`You are taking a ${data.difficulty.toLowerCase()} ${data.topic} interview consisting of ${totalQuestions} AI-generated questions. Each new question is adapted based on your previous answer.`;
+
+document.getElementById("sessionTag").innerText =
+    "session_01 · " +
+    data.topic.toLowerCase().replace(/ /g,"_") +
+    " · " +
+    data.difficulty.toLowerCase();
+
+document.getElementById("endBtn").addEventListener("click", () => {
+
+    if(confirm("Are you sure you want to end the interview?")){
+
+        window.location.href = "setup.html";
+
+    }
+
+});
+
+
+// Show progress
+document.getElementById("questionProgress").innerText =
+    questionCount + " / " + totalQuestions;
+
+updateProgressStrip();
+
+sendBtn.addEventListener("click", function () {
+
+    const answer = answerBox.value.trim();
+
+    if (answer === "") return;
+
+    // Save answer
+    interviewHistory.push({
+        question: currentQuestion,
+        answer: answer
+    });
+
+    // Show user message
+    const userMessage = document.createElement("div");
+    userMessage.className = "msg you";
+    userMessage.innerHTML = `
+        <div class="role">You</div>
+        <div class="bubble">${answer}</div>
+    `;
+    transcript.appendChild(userMessage);
+
+    answerBox.value = "";
+    transcript.scrollTop = transcript.scrollHeight;
+
+    // If this was the last question, generate report
+    if (questionCount >= totalQuestions) {
+
+        fetch("http://127.0.0.1:5000/generateReport", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                history: interviewHistory
+            })
+        })
+        .then(response => response.json())
+        .then(report => {
+            localStorage.setItem("report", JSON.stringify(report));
+
+            localStorage.setItem(
+                "interviewHistory",
+                JSON.stringify(interviewHistory)
+            );
+
+            localStorage.setItem(
+                "interviewData",
+                JSON.stringify(data)
+            );
+
+            window.location.href = "Report.html";
+        })
+        .catch(error => console.error(error));
+
+        return;
+    }
+
+    // Otherwise get next question
+    fetch("http://127.0.0.1:5000/nextQuestion", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            question: currentQuestion,
+            answer: answer
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        questionCount++;
+
+        document.getElementById("questionProgress").innerText =
+            questionCount + " / " + totalQuestions;
+        updateProgressStrip();
+        
+        currentQuestion = data.question;
+
+        const aiMessage = document.createElement("div");
+
+        aiMessage.className = "msg interviewer";
+
+        aiMessage.innerHTML = `
+            <div class="role">Interviewer</div>
+            <div class="bubble">${data.question}</div>
+        `;
+
+        transcript.appendChild(aiMessage);
+
+        transcript.scrollTop = transcript.scrollHeight;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+});
+</script>
+</body>
+</html>

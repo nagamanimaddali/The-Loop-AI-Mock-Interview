@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Loop — about</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #11141A;
+    --panel: #191D25;
+    --panel-line: #262B35;
+    --text: #E7E9EE;
+    --muted: #8B92A3;
+    --accent: #5EEAD4;
+    --accent-dim: #2C6E66;
+    --warn: #F0A857;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  body{
+    background: var(--bg); color: var(--text); font-family:'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 32px; border-bottom: 1px solid var(--panel-line);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:10px; height:10px; border-radius:50%; background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(94,234,212,0.15); animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{ 0%,100%{ box-shadow: 0 0 0 3px rgba(94,234,212,0.15); } 50%{ box-shadow: 0 0 0 6px rgba(94,234,212,0.08); } }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: 18px; letter-spacing: -0.02em; }
+  nav{ display:flex; gap: 28px; font-size: 14px; color: var(--muted); }
+  nav a{ color: var(--muted); text-decoration:none; }
+  nav a.active{ color: var(--accent); }
+  .cta-small{
+    background: var(--accent); color: #0B1512; font-weight:600; font-size: 13px;
+    padding: 9px 16px; border-radius: 7px; text-decoration:none;
+  }
+
+  main{ max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+  /* hero */
+  .hero{ padding: 64px 0 40px; text-align:center; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.06em; margin-bottom: 16px; display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .eyebrow::before{ content: ">"; color: var(--accent-dim); }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px;
+    letter-spacing: -0.02em; margin-bottom: 18px; max-width:700px; margin-left:auto; margin-right:auto;
+  }
+  h1 span{ color: var(--muted); }
+  .hero-sub{
+    color: var(--muted); font-size: 15.5px; line-height:1.7; max-width:560px; margin:0 auto;
+  }
+
+  .section-label{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom: 8px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::before{ content:">"; color: var(--accent-dim); }
+  .section-title{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:26px; margin-bottom: 36px;
+    letter-spacing:-0.02em;
+  }
+  section{ padding: 50px 0; border-top: 1px solid var(--panel-line); }
+
+  /* how it works */
+  .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--panel-line); border:1px solid var(--panel-line); border-radius:12px; overflow:hidden; }
+  @media (max-width: 860px){ .steps{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px){ .steps{ grid-template-columns: 1fr; } }
+  .step{ background: var(--bg); padding: 26px 22px; }
+  .step .num{ font-family:'JetBrains Mono', monospace; color: var(--accent); font-size:12px; margin-bottom:14px; }
+  .step h3{ font-family:'Space Grotesk', sans-serif; font-size:16px; margin-bottom:8px; }
+  .step p{ font-size:13.5px; color: var(--muted); line-height:1.55; }
+
+  /* tech stack */
+  .stack-grid{ display:grid; grid-template-columns: repeat(5, 1fr); gap:12px; }
+  @media (max-width: 860px){ .stack-grid{ grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 520px){ .stack-grid{ grid-template-columns: repeat(2, 1fr); } }
+  .stack-item{
+    background: var(--panel); border:1px solid var(--panel-line); border-radius:10px;
+    padding: 18px 16px; text-align:center;
+  }
+  .stack-item .name{ font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--text); margin-bottom:4px; }
+  .stack-item .role{ font-size:11px; color: var(--muted); }
+
+  /* features */
+  .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--panel-line); border:1px solid var(--panel-line); border-radius: 12px; overflow:hidden; }
+  @media (max-width: 720px){ .feature-grid{ grid-template-columns: 1fr; } }
+  .feature{ background: var(--bg); padding: 26px 24px; }
+  .feature .k{ font-family:'JetBrains Mono', monospace; color: var(--accent); font-size:12px; margin-bottom:10px; }
+  .feature h3{ font-family:'Space Grotesk', sans-serif; font-size:16px; margin-bottom:8px; }
+  .feature p{ font-size:13.5px; color: var(--muted); line-height:1.55; }
+
+  /* faq */
+  .faq-list{ display:flex; flex-direction:column; gap:1px; background: var(--panel-line); border:1px solid var(--panel-line); border-radius:12px; overflow:hidden; }
+  .faq-item{ background: var(--panel); }
+  .faq-q{
+    padding: 18px 20px; font-size:14.5px; font-weight:500; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .faq-q .chev{ color: var(--muted); font-family:'JetBrains Mono', monospace; transition: transform .2s; }
+  .faq-item.open .faq-q .chev{ transform: rotate(45deg); color: var(--accent); }
+  .faq-a{
+    max-height:0; overflow:hidden; transition: max-height .25s ease, padding .25s ease;
+    padding: 0 20px; font-size:13.5px; color: var(--muted); line-height:1.6;
+  }
+  .faq-item.open .faq-a{ max-height:200px; padding: 0 20px 18px; }
+
+  /* cta */
+  .cta-section{ text-align:center; padding: 70px 0 90px; }
+  .cta-section h2{ font-family:'Space Grotesk', sans-serif; font-size:28px; margin-bottom:14px; letter-spacing:-0.02em; }
+  .cta-section p{ color: var(--muted); font-size:14.5px; margin-bottom:28px; }
+  .btn-primary{
+    background: var(--accent); color:#0B1512; font-weight:600; font-size:14px;
+    padding: 13px 24px; border-radius: 8px; text-decoration:none; border:none; display:inline-block;
+  }
+
+  footer{ text-align:center; padding: 24px; color: var(--muted); font-size:12px; border-top:1px solid var(--panel-line); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div class="brand-name">the loop</div>
+  </div>
+  <nav>
+    <a href="loop-setup-page.html">Topics</a>
+    <a class="active" href="loop-about-page.html">How it works</a>
+    <a href="loop-history-page.html">History</a>
+  </nav>
+  <a class="cta-small" href="loop-setup-page.html">Start interview</a>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">about the loop</div>
+    <h1>A live AI interviewer that <span>runs the loop with you.</span></h1>
+    <p class="hero-sub">The Loop is a practice ground for technical interviews — DSA, CS fundamentals, and language-specific rounds — with an AI interviewer that asks real follow-up questions instead of reciting a script.</p>
+  </div>
+
+  <section>
+    <div class="section-label">process</div>
+    <div class="section-title">How it works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="num mono">01</div>
+        <h3>Configure your session</h3>
+        <p>Choose a topic, difficulty, and interviewer style — from friendly to Google-style deep dives.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">02</div>
+        <h3>Answer, live</h3>
+        <p>Questions stream in one at a time. Type your answer the way you'd explain it out loud.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">03</div>
+        <h3>Get pushed on it</h3>
+        <p>The interviewer follows up on gaps and edge cases, the way a real interview loop would.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">04</div>
+        <h3>Review the report</h3>
+        <p>See a full breakdown — technical depth, communication, and a question-by-question review.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">under the hood</div>
+    <div class="section-title">Technology stack</div>
+    <div class="stack-grid">
+      <div class="stack-item"><div class="name mono">Next.js</div><div class="role">Frontend framework</div></div>
+      <div class="stack-item"><div class="name mono">Node.js</div><div class="role">Backend runtime</div></div>
+      <div class="stack-item"><div class="name mono">MongoDB</div><div class="role">Session storage</div></div>
+      <div class="stack-item"><div class="name mono">Gemini AI</div><div class="role">Interview engine</div></div>
+      <div class="stack-item"><div class="name mono">AWS</div><div class="role">Deployment</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">what you get</div>
+    <div class="section-title">Features</div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="k mono">01</div>
+        <h3>Adaptive follow-ups</h3>
+        <p>The interviewer reacts to what you actually said, not a fixed question list.</p>
+      </div>
+      <div class="feature">
+        <div class="k mono">02</div>
+        <h3>Streaming responses</h3>
+        <p>Questions and feedback render progressively — no staring at a blank screen.</p>
+      </div>
+      <div class="feature">
+        <div class="k mono">03</div>
+        <h3>Multiple interviewer styles</h3>
+        <p>Practice against tones modeled on friendly, Amazon, Google, and Microsoft-style interviews.</p>
+      </div>
+      <div class="feature">
+        <div class="k mono">04</div>
+        <h3>Detailed reports</h3>
+        <p>Score breakdowns across technical depth, communication, and problem solving.</p>
+      </div>
+      <div class="feature">
+        <div class="k mono">05</div>
+        <h3>Session history</h3>
+        <p>Every past session saved with its score and report, so you can track progress over time.</p>
+      </div>
+      <div class="feature">
+        <div class="k mono">06</div>
+        <h3>Topic coverage</h3>
+        <p>DSA, DBMS, OS, CN, OOP, Java, Python, and SQL rounds, all in one place.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">questions</div>
+    <div class="section-title">FAQ</div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item open">
+        <div class="faq-q">Is this a real interviewer or a script? <span class="chev">+</span></div>
+        <div class="faq-a">Neither, exactly — it's an AI model that generates and adapts questions live based on your answers, so no two sessions play out the same way.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to type my answers, or can I speak? <span class="chev">+</span></div>
+        <div class="faq-a">Sessions are text-based for now — you type your answers, just like a chat conversation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is my score calculated? <span class="chev">+</span></div>
+        <div class="faq-a">Each answer is evaluated for technical correctness, communication clarity, and problem-solving approach, then combined into an overall score and hiring recommendation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I revisit past interviews? <span class="chev">+</span></div>
+        <div class="faq-a">Yes — every completed session is saved to your history with its full report and score.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section">
+    <h2>Ready to run the loop?</h2>
+    <p>Pick a topic and start your first session in under a minute.</p>
+    <a class="btn-primary" href="loop-setup-page.html">Start interview</a>
+  </div>
+</main>
+
+<footer>the loop — practice mockup, not a live product</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      q.parentElement.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
