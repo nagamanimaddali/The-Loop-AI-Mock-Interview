@@ -1,0 +1,174 @@
+✅ Submission Checklist
+1. Project Concept Note (PDF) ⭐ (Required)
+
+This PDF should contain:
+
+Project Title
+Application Name
+Problem Statement / Objective
+Target Users
+Use Case
+LLM Model Used
+API Used
+Key Features
+Expected User Experience
+Live AWS URL
+2. Live Application ⭐ (Required)
+
+Your application must be publicly accessible.
+
+You'll need:
+
+AWS App Runner / Elastic Beanstalk deployment
+Public HTTPS URL
+
+Example:
+
+https://theloop.ap-south-1.awsapprunner.com
+
+You'll paste this URL into both:
+
+Concept Note
+Project Report
+3. Project Report ⭐ (Required)
+
+This is the biggest document.
+
+It should include:
+
+Cover Page
+Project Name
+Your Name
+IBM Internship
+Date
+1. Application Overview
+
+Explain:
+
+What is The Loop?
+What problem does it solve?
+2. Tech Stack
+
+Example:
+
+Frontend
+
+HTML
+CSS
+JavaScript
+
+Backend
+
+Flask (Python)
+
+AI
+
+Google Gemini API
+
+Deployment
+
+AWS
+3. Prompt Engineering Strategy
+
+Very important.
+
+Explain:
+
+How you prompted Gemini.
+
+Include sample prompts like:
+
+Generate an interview question on DSA at Medium difficulty.
+
+Generate a follow-up interview question based on the user's previous answer.
+
+Evaluate the complete interview and return JSON.
+
+4. Phase-wise Development
+
+Explain how you built it.
+
+Example:
+
+Phase 1
+
+Landing Page
+
+Phase 2
+
+Setup Page
+
+Phase 3
+
+Flask Backend
+
+Phase 4
+
+Gemini Integration
+
+Phase 5
+
+Dynamic Interview
+
+Phase 6
+
+Report Generation
+5. Architecture Diagram
+
+Something like:
+
+User
+
+↓
+
+Frontend (HTML/CSS/JS)
+
+↓
+
+Flask Backend
+
+↓
+
+Gemini API
+
+↓
+
+JSON Response
+
+↓
+
+Frontend Report
+
+We'll make this look nice.
+
+6. Challenges
+
+Examples:
+
+Gemini quota exceeded
+Parsing JSON
+Dynamic report generation
+LocalStorage issues
+AWS deployment
+7. Learnings
+
+Explain what you learned.
+
+8. Reflection
+
+Personal reflection.
+
+4. Dockerfile ⭐ (Required)
+
+Your project needs a working Dockerfile.
+
+We'll create one.
+
+5. Deploy to AWS ⭐ (Required)
+
+Need:
+
+Docker Image
+AWS App Runner
+
+We'll do this together.

@@ -212,7 +212,7 @@
   <div id="questionReview"></div>
 
 <div class="report-actions">
-    <button class="btn-primary">
+    <button class="btn-primary" id="startBtn">
         Start another interview
     </button>
 
@@ -345,11 +345,19 @@ if(report){
     });
 
 }
-document
-.getElementById("retryBtn")
-.onclick = () => {
+// Start Another Interview button
+document.getElementById("startBtn").onclick = () => {
 
-    window.location.href =
+    localStorage.removeItem("report");
+    localStorage.removeItem("interviewHistory");
+    localStorage.removeItem("interviewData");
+
+    window.location.href = "setup.html";
+
+};
+
+document.getElementById("retryBtn").onclick = () => {
+  window.location.href =
         "setup.html";
 
 };
